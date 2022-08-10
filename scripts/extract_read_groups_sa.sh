@@ -1,0 +1,52 @@
+#!/usr/bin/env bash
+
+#grabs bcs and displays reads in IGV for subassembly
+
+#usage: /nfs/kitzman2/smithcat/proj/wt1_2022/scripts/extract_read_groups_sa.sh PATH_TO_SUBASSEMBLY_BAM PATH_TO_SUBASSEMBLY_BAM_BARCODE_INDEX PATH_TO_BC_TBL_TXT PATH_TO_WEB_OUTPUT_DIR REF_FASTA_PATH
+
+#make sure you are in your subasm_py2 environment!
+
+#2022-0421 
+#/nfs/kitzman2/smithcat/proj/wt1_2022/scripts/extract_read_groups_sa.sh /nfs/kitzman2/jacob/proj/jensplice/20220406_wt1_subasm/sapipe/sa/JKP1053.tagsort.bam /nfs/kitzman2/jacob/proj/jensplice/20220406_wt1_subasm/sapipe/sa/JKP1053.tagsort.bam.idx.txt /nfs/kitzman2/smithcat/proj/wt1_2022/20220421_inspect_bcs/rand_20_bcs.txt /srv/www/html/pub/public/kitzmanlab/202204_cathy_temp/20220421_wt1_inspection/rand_20_bcs/JKP1053_MM2B_oligoDT/ /nfs/kitzman2/jacob/proj/jensplice/20211217_wt1ex9_design/jkp815.fa
+
+#2022-0425 
+#This should all have the same output as on 0421 but trying to keep folders organized
+#/nfs/kitzman2/smithcat/proj/wt1_2022/scripts/extract_read_groups_sa.sh /nfs/kitzman2/jacob/proj/jensplice/20220406_wt1_subasm/sapipe/sa/JKP1053.tagsort.bam /nfs/kitzman2/jacob/proj/jensplice/20220406_wt1_subasm/sapipe/sa/JKP1053.tagsort.bam.idx.txt /nfs/kitzman2/smithcat/proj/wt1_2022/20220421_inspect_bcs/rand_20_bcs.txt /srv/www/html/pub/public/kitzmanlab/202204_cathy_temp/20220421_wt1_inspection/rand_20_bcs/JKP1053_MM1B_oligoDT/ /nfs/kitzman2/jacob/proj/jensplice/20211217_wt1ex9_design/jkp815.fa
+#/nfs/kitzman2/smithcat/proj/wt1_2022/scripts/extract_read_groups_sa.sh /nfs/kitzman2/jacob/proj/jensplice/20220406_wt1_subasm/sapipe/sa/JKP1053.tagsort.bam /nfs/kitzman2/jacob/proj/jensplice/20220406_wt1_subasm/sapipe/sa/JKP1053.tagsort.bam.idx.txt /nfs/kitzman2/smithcat/proj/wt1_2022/20220421_inspect_bcs/rand_20_bcs.txt /srv/www/html/pub/public/kitzmanlab/202204_cathy_temp/20220421_wt1_inspection/rand_20_bcs/JKP1053_MM1B/ /nfs/kitzman2/jacob/proj/jensplice/20211217_wt1ex9_design/jkp815.fa
+#/nfs/kitzman2/smithcat/proj/wt1_2022/scripts/extract_read_groups_sa.sh /nfs/kitzman2/jacob/proj/jensplice/20220406_wt1_subasm/sapipe/sa/JKP1053.tagsort.bam /nfs/kitzman2/jacob/proj/jensplice/20220406_wt1_subasm/sapipe/sa/JKP1053.tagsort.bam.idx.txt /nfs/kitzman2/smithcat/proj/wt1_2022/20220421_inspect_bcs/rand_20_bcs.txt /srv/www/html/pub/public/kitzmanlab/202204_cathy_temp/20220421_wt1_inspection/rand_20_bcs/JKP1053_MM2B/ /nfs/kitzman2/jacob/proj/jensplice/20211217_wt1ex9_design/jkp815.fa
+
+#2022-0427
+#These all have the same output but trying to keep folders sane
+#/nfs/kitzman2/smithcat/proj/wt1_2022/scripts/extract_read_groups_sa.sh /nfs/kitzman2/jacob/proj/jensplice/20220406_wt1_subasm/sapipe/sa/JKP1053.tagsort.bam /nfs/kitzman2/jacob/proj/jensplice/20220406_wt1_subasm/sapipe/sa/JKP1053.tagsort.bam.idx.txt /nfs/kitzman2/smithcat/proj/wt1_2022/20220421_inspect_bcs/rand_40_pass_bcs.txt /srv/www/html/pub/public/kitzmanlab/202204_cathy_temp/20220421_wt1_inspection/rand_40_pass_bcs/JKP1053_MM2B_oligoDT/ /nfs/kitzman2/jacob/proj/jensplice/20211217_wt1ex9_design/jkp815.fa
+#/nfs/kitzman2/smithcat/proj/wt1_2022/scripts/extract_read_groups_sa.sh /nfs/kitzman2/jacob/proj/jensplice/20220406_wt1_subasm/sapipe/sa/JKP1053.tagsort.bam /nfs/kitzman2/jacob/proj/jensplice/20220406_wt1_subasm/sapipe/sa/JKP1053.tagsort.bam.idx.txt /nfs/kitzman2/smithcat/proj/wt1_2022/20220421_inspect_bcs/rand_40_pass_bcs.txt /srv/www/html/pub/public/kitzmanlab/202204_cathy_temp/20220421_wt1_inspection/rand_40_pass_bcs/JKP1053_MM1B_oligoDT/ /nfs/kitzman2/jacob/proj/jensplice/20211217_wt1ex9_design/jkp815.fa
+#/nfs/kitzman2/smithcat/proj/wt1_2022/scripts/extract_read_groups_sa.sh /nfs/kitzman2/jacob/proj/jensplice/20220406_wt1_subasm/sapipe/sa/JKP1053.tagsort.bam /nfs/kitzman2/jacob/proj/jensplice/20220406_wt1_subasm/sapipe/sa/JKP1053.tagsort.bam.idx.txt /nfs/kitzman2/smithcat/proj/wt1_2022/20220421_inspect_bcs/rand_40_pass_bcs.txt /srv/www/html/pub/public/kitzmanlab/202204_cathy_temp/20220421_wt1_inspection/rand_40_pass_bcs/JKP1053_MM1B/ /nfs/kitzman2/jacob/proj/jensplice/20211217_wt1ex9_design/jkp815.fa
+#/nfs/kitzman2/smithcat/proj/wt1_2022/scripts/extract_read_groups_sa.sh /nfs/kitzman2/jacob/proj/jensplice/20220406_wt1_subasm/sapipe/sa/JKP1053.tagsort.bam /nfs/kitzman2/jacob/proj/jensplice/20220406_wt1_subasm/sapipe/sa/JKP1053.tagsort.bam.idx.txt /nfs/kitzman2/smithcat/proj/wt1_2022/20220421_inspect_bcs/rand_40_pass_bcs.txt /srv/www/html/pub/public/kitzmanlab/202204_cathy_temp/20220421_wt1_inspection/rand_40_pass_bcs/JKP1053_MM2B/ /nfs/kitzman2/jacob/proj/jensplice/20211217_wt1ex9_design/jkp815.fa
+
+#2022-0428
+#/nfs/kitzman2/smithcat/proj/wt1_2022/scripts/extract_read_groups_sa.sh /nfs/turbo/umms-kitzmanj/oldvol2/jacob/proj/jensplice/20220426_wt1_subasm_filter_stringent/sapipe/sa/JKP1053.tagsort.bam /nfs/turbo/umms-kitzmanj/oldvol2/jacob/proj/jensplice/20220426_wt1_subasm_filter_stringent/sapipe/sa/JKP1053.tagsort.bam.idx.txt /nfs/kitzman2/smithcat/proj/wt1_2022/20220421_inspect_bcs/rand_20_bcs.txt /srv/www/html/pub/public/kitzmanlab/202204_cathy_temp/20220421_wt1_inspection/stringent_filter/rand_20_bcs/JKP1053_MM2B_oligoDT/ /nfs/kitzman2/jacob/proj/jensplice/20211217_wt1ex9_design/jkp815.fa
+#/nfs/kitzman2/smithcat/proj/wt1_2022/scripts/extract_read_groups_sa.sh /nfs/turbo/umms-kitzmanj/oldvol2/jacob/proj/jensplice/20220426_wt1_subasm_filter_stringent/sapipe/sa/JKP1053.tagsort.bam /nfs/turbo/umms-kitzmanj/oldvol2/jacob/proj/jensplice/20220426_wt1_subasm_filter_stringent/sapipe/sa/JKP1053.tagsort.bam.idx.txt /nfs/kitzman2/smithcat/proj/wt1_2022/20220421_inspect_bcs/rand_20_bcs.txt /srv/www/html/pub/public/kitzmanlab/202204_cathy_temp/20220421_wt1_inspection/stringent_filter/rand_20_bcs/JKP1053_MM1B_oligoDT/ /nfs/kitzman2/jacob/proj/jensplice/20211217_wt1ex9_design/jkp815.fa
+#/nfs/kitzman2/smithcat/proj/wt1_2022/scripts/extract_read_groups_sa.sh /nfs/turbo/umms-kitzmanj/oldvol2/jacob/proj/jensplice/20220426_wt1_subasm_filter_stringent/sapipe/sa/JKP1053.tagsort.bam /nfs/turbo/umms-kitzmanj/oldvol2/jacob/proj/jensplice/20220426_wt1_subasm_filter_stringent/sapipe/sa/JKP1053.tagsort.bam.idx.txt /nfs/kitzman2/smithcat/proj/wt1_2022/20220421_inspect_bcs/rand_20_bcs.txt /srv/www/html/pub/public/kitzmanlab/202204_cathy_temp/20220421_wt1_inspection/stringent_filter/rand_20_bcs/JKP1053_MM1B/ /nfs/kitzman2/jacob/proj/jensplice/20211217_wt1ex9_design/jkp815.fa
+#/nfs/kitzman2/smithcat/proj/wt1_2022/scripts/extract_read_groups_sa.sh /nfs/turbo/umms-kitzmanj/oldvol2/jacob/proj/jensplice/20220426_wt1_subasm_filter_stringent/sapipe/sa/JKP1053.tagsort.bam /nfs/turbo/umms-kitzmanj/oldvol2/jacob/proj/jensplice/20220426_wt1_subasm_filter_stringent/sapipe/sa/JKP1053.tagsort.bam.idx.txt /nfs/kitzman2/smithcat/proj/wt1_2022/20220421_inspect_bcs/rand_20_bcs.txt /srv/www/html/pub/public/kitzmanlab/202204_cathy_temp/20220421_wt1_inspection/stringent_filter/rand_20_bcs/JKP1053_MM2B/ /nfs/kitzman2/jacob/proj/jensplice/20211217_wt1ex9_design/jkp815.fa
+
+#2022-0512
+#But this is follow up to the May 5 analysis in the RNA script
+#/nfs/kitzman2/smithcat/proj/wt1_2022/scripts/extract_read_groups_sa.sh /nfs/turbo/umms-kitzmanj/oldvol2/jacob/proj/jensplice/20220426_wt1_subasm_filter_stringent/sapipe/sa/JKP1053.tagsort.bam /nfs/turbo/umms-kitzmanj/oldvol2/jacob/proj/jensplice/20220426_wt1_subasm_filter_stringent/sapipe/sa/JKP1053.tagsort.bam.idx.txt /nfs/kitzman2/smithcat/proj/wt1_2022/20220505_inspect_bad_vars/JKP1053_BB_test_Cos1053_oligodT_MM1B_bad_vars.txt /srv/www/html/pub/public/kitzmanlab/202204_cathy_temp/20220505_bad_vars/BB_test_Cos1053_oligodT_MM1B/ /nfs/kitzman2/jacob/proj/jensplice/20211217_wt1ex9_design/jkp815.fa
+#/nfs/kitzman2/smithcat/proj/wt1_2022/scripts/extract_read_groups_sa.sh /nfs/turbo/umms-kitzmanj/oldvol2/jacob/proj/jensplice/20220426_wt1_subasm_filter_stringent/sapipe/sa/JKP1055.tagsort.bam /nfs/turbo/umms-kitzmanj/oldvol2/jacob/proj/jensplice/20220426_wt1_subasm_filter_stringent/sapipe/sa/JKP1055.tagsort.bam.idx.txt /nfs/kitzman2/smithcat/proj/wt1_2022/20220505_inspect_bad_vars/JKP1055_BB_RT_3_ODT_335_cos1055_bad_vars.txt /srv/www/html/pub/public/kitzmanlab/202204_cathy_temp/20220505_bad_vars/BB_RT_3_ODT_335_cos1055/ /nfs/kitzman2/jacob/proj/jensplice/20211217_wt1ex9_design/jkp815.fa
+#Ok this one goes with the acceptor variants
+#/nfs/kitzman2/smithcat/proj/wt1_2022/scripts/extract_read_groups_sa.sh /nfs/turbo/umms-kitzmanj/oldvol2/jacob/proj/jensplice/20220426_wt1_subasm_filter_stringent/sapipe/sa/JKP1053.tagsort.bam /nfs/turbo/umms-kitzmanj/oldvol2/jacob/proj/jensplice/20220426_wt1_subasm_filter_stringent/sapipe/sa/JKP1053.tagsort.bam.idx.txt /nfs/kitzman2/smithcat/proj/wt1_2022/20220512_accept_vars/JKP1053_BB_RT_1_340_243_Hek1053_acceptor_vars.txt /srv/www/html/pub/public/kitzmanlab/202204_cathy_temp/20220512_accept_vars/BB_RT_1_340_243_Hek1053/ /nfs/kitzman2/jacob/proj/jensplice/20211217_wt1ex9_design/jkp815.fa
+#/nfs/kitzman2/smithcat/proj/wt1_2022/scripts/extract_read_groups_sa.sh /nfs/turbo/umms-kitzmanj/oldvol2/jacob/proj/jensplice/20220426_wt1_subasm_filter_stringent/sapipe/sa/JKP1053.tagsort.bam /nfs/turbo/umms-kitzmanj/oldvol2/jacob/proj/jensplice/20220426_wt1_subasm_filter_stringent/sapipe/sa/JKP1053.tagsort.bam.idx.txt /nfs/kitzman2/smithcat/proj/wt1_2022/20220512_accept_vars/JKP1053_BB_RT_1_ODT_243_Hek1053_acceptor_vars.txt /srv/www/html/pub/public/kitzmanlab/202204_cathy_temp/20220512_accept_vars/BB_RT_1_ODT_243_Hek1053/ /nfs/kitzman2/jacob/proj/jensplice/20211217_wt1ex9_design/jkp815.fa
+#/nfs/kitzman2/smithcat/proj/wt1_2022/scripts/extract_read_groups_sa.sh /nfs/turbo/umms-kitzmanj/oldvol2/jacob/proj/jensplice/20220426_wt1_subasm_filter_stringent/sapipe/sa/JKP1053.tagsort.bam /nfs/turbo/umms-kitzmanj/oldvol2/jacob/proj/jensplice/20220426_wt1_subasm_filter_stringent/sapipe/sa/JKP1053.tagsort.bam.idx.txt /nfs/kitzman2/smithcat/proj/wt1_2022/20220512_accept_vars/JKP1053_BB_RT_1_340_335_Cos1053_acceptor_vars.txt /srv/www/html/pub/public/kitzmanlab/202204_cathy_temp/20220512_accept_vars/BB_RT_1_340_335_Cos1053/ /nfs/kitzman2/jacob/proj/jensplice/20211217_wt1ex9_design/jkp815.fa
+
+basefn=check_subasm
+for status in pass apparently_wt_no_passing_vars possible_chimeric_no_major_variant ; do 
+extract_specific_read_groups \
+  --tag_field BC \
+  --single_bam $1 \
+  --single_bcindex $2 \
+  --barcode_list <(cat $3 | mlr --tsv  filter "\$status==\"$status\"" then cut -f readgroupid | sed -e1d | sort -u ) \
+  --mkigvpage \
+  --track_height 400 \
+  --web_out_dir $4 \
+  --web_out_basefn ${basefn}_${status} \
+  --ref_fa $5 ;
+done

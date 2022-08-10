@@ -1,0 +1,16 @@
+conda activate mypy2
+
+bpp_dir=/home/smithcat/BPP/
+fa_in=/nfs/kitzman2/smithcat/proj/wt1_2022/ex9_data/bpp_fa/
+data_out=/nfs/kitzman2/smithcat/proj/wt1_2022/ex9_data/bpp_pred/
+
+fa_files=$fa_in*.fa
+
+for file in $fa_files; do 
+	stem_suff=${file##*/}; 
+	stem=${stem_suff%.*}; 	
+	python $bpp_dir/BP_PPT.py -b $bpp_dir/demo/pwmBP_human.txt \
+                                  -p $bpp_dir/demo/scPPT_human.txt \
+                                  -i $file \
+				  -r 0 > $data_out/bpp_pred_$stem.txt; \
+done

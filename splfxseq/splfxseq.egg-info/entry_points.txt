@@ -1,0 +1,3 @@
+[console_scripts]
+index_tagsorted_bam = spliceprocess.index_tagsorted_bam:main
+
